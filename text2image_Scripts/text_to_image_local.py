@@ -1,7 +1,6 @@
 # --- Set custom Hugging Face cache path before loading anything
 import os
-os.environ["HF_HOME"] = "/run/media/riccardodandrea/Ricca_Data"  # << Dein Pfad
-
+os.environ["HF_HOME"] = "/run/media/riccardodandrea/Ricca_Data"
 # --- Imports
 import torch
 from diffusers import (
@@ -13,20 +12,17 @@ from transformers import CLIPTokenizer
 
 # --- Modellliste (verschiedene Diffusion-Modelle)
 models_ids = [
-    #"Qwen/Qwen-Image",
     "stabilityai/sdxl-turbo",                         # SDXL
     "runwayml/stable-diffusion-v1-5",                 # Klassisch
-    "stabilityai/stable-diffusion-xl-base-1.0",       # SDXL
-    "dreamlike-art/dreamlike-photoreal-2.0",          # Klassisch
+    "stabilityai/stable-diffusion-xl-base-1.0"
 ]
 
 # --- Prompt & negativer Prompt
 prompt = """
-A cat holding drawn in a picasso look
+A stunning futuristic cityscape at sunset, seen from a high balcony. Neon lights reflect on wet streets, flying cars move between skyscrapers. A stylish woman in a red leather jacket and cyberpunk visor stands in the foreground, glowing holographic tattoos on her arm. The atmosphere is cinematic, ultra detailed, photorealistic yet artistic, masterpiece, award-winning photography, sharp focus, 8K, dramatic lighting, high dynamic range.
+
 """
-
 negative_prompt = "blurry, cartoon, distorted, extra limbs, bad anatomy, watermark, text, logo, low detail, lowres"
-
 # --- Kürze Prompt auf 77 Tokens
 tokenizer = CLIPTokenizer.from_pretrained("openai/clip-vit-large-patch14")
 tokens = tokenizer(prompt)["input_ids"]
