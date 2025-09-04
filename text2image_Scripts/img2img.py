@@ -3,7 +3,7 @@ from PIL import Image
 import torch
 
 pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
-    "Qwen/Qwen-Image",
+    #"Qwen/Qwen-Image",
     torch_dtype=torch.float16).to("cuda")
 
 init_image = Image.open("Picture/stabilityai_stable-diffusion-xl-base-1.0.png").convert("RGB").resize((512, 512))

@@ -1,40 +1,53 @@
-# "/run/media/riccardodandrea/Ricca_Data"
+import os 
 
+import altair as alt
 import streamlit as st
-import os
-from diffusers import AutoPipelineForText2Image, DEISMultistepScheduler
 import torch
+from diffusers import StableDiffusionPipeline
 
-# SessionState für Button merken
-if "change_path" not in st.session_state:
-    st.session_state.change_path = False
+st.set_page_config(page_title="Text → Image Generator", page_icon="🎨", layout="centered")
 
-if st.button("Do you want to change path?"):
-    st.session_state.change_path = True
+st.title("🎨 Text → Image Generator")
 
-if st.session_state.change_path:
-    Path_to_models = st.text_input(
-        label="Enter your Dir where the models are stored",
-        key="path_input",
-        value="/run/media/riccardodandrea/Ricca_Data/UnfilteredAI/NSFW-gen-v2"  # optional Default
-    )
+# -----------------------
+# Modell-Auswahl
+# -----------------------
+MODEL_OPTIONS = {
+    "dreamlike-art/dreamlike-photoreal-2.0": "Dreamlike Photoreal 2.0 (fotorealistisch)",
+    "UnfilteredAI/NSFW-gen-v2": "NSFW Gen v2 (unzensierte Inhalte)",
+}
 
-    if Path_to_models:
-        # Nur für HF_CACHE setzen, wenn du willst
-        os.environ["HF_HOME"] = Path_to_models
-        st.success(f"HF_HOME set to: {Path_to_models}")
+model_choice = st.selectbox("Wähle ein Modell:", options=list(MODEL_OPTIONS.keys()), format_func=lambda x: MODEL_OPTIONS[x])
 
-        try:
-            pipe = AutoPipelineForText2Image.from_pretrained(
-                Path_to_models,   # <-- Lokaler Pfad statt Repo-Name
-                torch_dtype=torch.float16,
-                variant="fp16",
-                local_files_only=True  # 🔒 verhindert Download-Versuche
-            )
-            pipe.scheduler = DEISMultistepScheduler.from_config(pipe.scheduler.config)
-            pipe = pipe.to("cuda")
-            st.success("Pipeline geladen ✅")
-        except Exception as e:
-            st.error(f"Konnte Modell nicht laden: {e}")
+# -----------------------
+# Prompt Eingabe
+# -----------------------
+prompt = st.text_area("Gib deinen Prompt ein:", placeholder="z. B. A futuristic cityscape at sunset, ultra detailed")
+
+negative_prompt = st.text_input("Optional: Negative Prompt (was ausgeschlossen werden soll)")
+
+# -----------------------
+# Pipeline laden (gecached)
+# -----------------------
+def load_pipeline(model_name: str):
+    pipe = StableDiffusionPipeline.from_pretrained(model_name, 
+                                                   torch_dtype=torch.float16,
+                                                       cache_dir="/run/media/riccardodandrea/Ricca_Data"
+)
+    if torch.cuda.is_available():
+        pipe = pipe.to("cuda")
     else:
-        st.warning("No dir entered")
+        pipe = pipe.to("cpu")
+    return pipe
+
+# -----------------------
+# Bild generieren
+# -----------------------
+if st.button("Bild generieren"):
+    if not prompt.strip():
+        st.warning("Bitte zuerst einen Prompt eingeben!")
+    else:
+        with st.spinner(f"Generiere Bild mit {model_choice} ..."):
+            pipe = load_pipeline(model_choice)
+            image = pipe(prompt, negative_prompt=negative_prompt, guidance_scale=7.5).images[0]
+            st.image(image, caption=f"Generiert mit {model_choice}", use_column_width=True)
