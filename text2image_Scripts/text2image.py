@@ -6,7 +6,7 @@ from diffusers import AutoPipelineForText2Image, DEISMultistepScheduler, StableD
 import torch
 
 pipe = pipe = StableDiffusionPipeline.from_pretrained("UnfilteredAI/NSFW-gen-v2", 
-                                                   torch_dtype=torch.float16,)
+                                                   torch_dtype=torch.float16)
                                                        
 pipe.scheduler = DEISMultistepScheduler.from_config(pipe.scheduler.config)
 pipe = pipe.to("cuda")

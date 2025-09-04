@@ -24,9 +24,7 @@ def generateImage():
 
     prompt, negative_prompt = prompt_and_negative_prompt(
                                 prompt="""
-                                (Moonlit lighting:1.1) A close-up of a mysterious man's face, 
-                                with soft shadows highlighting his sharp features, the light reflecting 
-                                in his intense eyes, cool tones creating a calm yet enigmatic atmosphere""",
+                                A car with 5 weehls""",
                                                          
                                 negative_prompt = "fake eyes, deformed eyes, bad eyes, cgi, 3D, digital, airbrushed""")
     image = pipe(
