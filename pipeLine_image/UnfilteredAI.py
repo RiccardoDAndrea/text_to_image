@@ -24,7 +24,7 @@ def generateImage():
 
     prompt, negative_prompt = prompt_and_negative_prompt(
                                 prompt="""
-                                A car with 5 weehls""",
+                                A Minecraft looking like Iron man FIGTHING against the ender dragon""",
                                                          
                                 negative_prompt = "fake eyes, deformed eyes, bad eyes, cgi, 3D, digital, airbrushed""")
     image = pipe(

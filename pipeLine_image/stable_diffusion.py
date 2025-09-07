@@ -20,9 +20,9 @@ def generateImage():
         model_path="/run/media/riccardodandrea/Ricca_Data/hub/models--runwayml--stable-diffusion-v1-5/snapshots/451f4fe16113bff5a5d2269ed5ad43b0592e9a14"
     )
     prompt, negative_prompt = prompt_and_negative_prompt(
-        prompt="(Moonlit lighting:1.1) A close-up of a mysterious man's face, "
-               "with soft shadows highlighting his sharp features, the light reflecting "
-               "in his intense eyes, cool tones creating a calm yet enigmatic atmosphere",
+        prompt="""(Moonlit lighting:1.1) A close-up of a mysterious man's face, 
+               with soft shadows highlighting his sharp features, the light reflecting 
+               in his intense eyes, cool tones creating a calm yet enigmatic atmosphere""",
         negative_prompt="fake eyes, deformed eyes, bad eyes, cgi, 3D, digital, airbrushed"
     )
 
