@@ -8,12 +8,45 @@ st.set_page_config(page_title="Text-to-Image Generator",
 
 st.title("🎨 Text-to-Image mit Juggernaut-XL-v9")
 
-welcome_page_tab1, Chat_tab2, info_for_models_tab3 = st.tabs(["Welcome_Page", "Chat", "Owl"])
+welcome_page_tab1, Chat_tab2, info_for_models_tab3 = st.tabs([" :house: Home", 
+                                                              " :statue_of_liberty: Chat", 
+                                                              " 🤗 hugging face models"])
 
 with welcome_page_tab1:
-    st.header("A cat")
-    st.image("https://static.streamlit.io/examples/cat.jpg", width=200)
+    # Introduction on what is text 2 Image
+    st.title("Welcome my name is")
+    st.write("""
+            :blue[Riccardo D'Andrea] Welcome to my text-to-image journey!!! 🚀
 
+            I'm Riccardo, a data scientist and deep learning enthusiast from Germany 😊. I look forward to taking you on an exciting journey into the world of machine learning.
+
+            In this field, the unknown has often become tangible—I will help you understand this even better and enable you to take action yourself. 💡
+
+            Let's discover it together! 🤔 Will we create new image spaces through text...?
+            """)
+    
+
+    st.divider()
+    st.subheader("What is Text 2 Image?")
+
+    st.write("""
+        Imagine that text-to-image models allow us to visually manifest our desires. 
+        These models use techniques from machine learning research, in particular computer vision and neural networks, to create complex, high-resolution image descriptions from simple text.
+            
+        It works as follows: The input text is first encoded into a numerical format, which is then fed into a neural network as an input data stream. This network consists of several layers of neural units (neurons) that derive more complex information about the text and ultimately generate an image description.
+            
+        The image is generated through a process called “diffusion,” in which the neural network slowly builds up an image piece by piece. This process is divided into several steps: 
+        1) Preliminary information is generated, which serves as the starting point for the diffusion process.
+        2) The information is then spread and updated across the neural network.
+        3) The process is repeated until a stable image is produced.
+
+        Text-to-image models have the ability to derive complex visual content from simple text descriptions. 
+        They can therefore be used as a tool to create innovative and creative images!
+            """)
+
+
+
+    st.markdown("")
 with Chat_tab2:
     # Sidebar Parameter
     user_num_inference_steps = st.sidebar.slider(
@@ -39,12 +72,18 @@ with Chat_tab2:
         try:
             return load_pipeline(model_path)
         except OSError as e:
+            
+            # Mac File path explanation
             st.info(""" **Beispielpfade (Mac):**
             - `/Users/<USERNAME>/.cache/huggingface/hub/models--stabilityai--stable-diffusion-2-1`
             - `/Volumes/ExternalDrive/models/Juggernaut-XL-v9`""")
+            
+            # Windows File path explanation
             st.info(""" **Beispielpfade (Windows):**
             - `C:\\Users\\<USERNAME>\\.cache\\huggingface\\hub\\models--stabilityai--stable-diffusion-2-1`
             - `D:\\models\\Juggernaut-XL-v9`""")
+            
+            # Linux File path explanation
             st.info(""" **Beispielpfade (Linux):**
             - `~/.cache/huggingface/hub/models--stabilityai--stable-diffusion-2-1`
             - `/run/media/<USERNAME>/hard_drive/hub/Juggernaut-XL-v9`
@@ -96,6 +135,7 @@ with Chat_tab2:
                 with chat_container:
                     with st.chat_message("assistant"):
                         st.write(pipe)
+
             elif pipe is not None:
                 st.session_state.pipe = pipe
                 msg = "✅ Modell erfolgreich geladen! Gib jetzt deinen Prompt ein ✨"
@@ -126,5 +166,7 @@ with Chat_tab2:
                             st.error(err_msg)
 
 with info_for_models_tab3:
-    st.header("An owl")
-    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
+    st.header("Which Model can you use 🤗? ")
+    st.info(""" 
+            Models for Text 2 Image [Huggingface](https://huggingface.co/models?pipeline_tag=text-to-image&sort=trending)!
+            """)
