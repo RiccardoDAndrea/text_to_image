@@ -170,13 +170,59 @@ with info_for_models_tab3:
     st.info(""" 
             Models for Text 2 Image [Huggingface](https://huggingface.co/models?pipeline_tag=text-to-image&sort=trending)!
             """)
-    
     st.write("""
-        Each model was trained with different images. Therefore, your model selection is crucial.
+            **Introduction:**
 
-        While one model was trained on photorealistic image diffusion, another was trained on cartoon-like images.
+            This tool helps you select a suitable text-to-image model.
 
-        HuggingFace models have a comprehensive description of the model's purpose. However, there are other models that do not have a description, in which case an internet search is always helpful.
-                    
+            Each model was trained on different images, so your model selection is crucial.
 
+            While one model was trained on photorealistic image diffusion, another was trained on cartoon-like images.
+
+            HuggingFace models have a comprehensive description of the model's purpose. 
+            However, there are other models that do not have a description, in which case an internet search is always helpful.
+
+            """)
+
+    # Button to open Model Catalog
+    st.markdown("[Find your Models](https://huggingface.co/models?pipeline_tag=text-to-image&sort=trending)")
+    # Select text to image model
+
+    models = ["Stable Diffusion", "DALL-E 2", "Midjourney"]
+    selected_model = st.selectbox("Choose a Model:", models)
+
+    if selected_model == 'Stable Diffusion':
+        # Info about the chosen model
+        st.write("""
+                **Model Details:**
+
+                * Purpose: Text-to-image tasks, such as generating photorealistic images from text descriptions.
+
+                * Training Data: Photorealistic images
+
+                Important Source: [Stable Diffusion](https://huggingface.co/docs/transformers/model_doc/stablediffusion) 
+        """)
+
+    elif selected_model == 'DALL-E 2':
+        # Info about the chosen model
+        st.write("""
+                **Model Details:**
+
+                * Purpose: Text-to-image tasks, such as generating photorealistic images from text descriptions.
+
+                * Training Data: Cartoon-like images
+
+                Important Source: [DALL-E 2](https://huggingface.co/ehristoforu/dalle-3-xl-v2) 
+        """)
+
+    elif selected_model == 'Midjourney':
+        # Info about the chosen model
+        st.write("""
+                **Model Details:**
+
+                    * Purpose: Text-to-image tasks, such as generating photorealistic images from text descriptions.
+
+                    * Training Data: Photographic images
+
+                Important Source: [Midjourney](https://huggingface.co/strangerzonehf/Flux-Midjourney-Mix2-LoRA) 
         """)
