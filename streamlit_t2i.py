@@ -170,3 +170,13 @@ with info_for_models_tab3:
     st.info(""" 
             Models for Text 2 Image [Huggingface](https://huggingface.co/models?pipeline_tag=text-to-image&sort=trending)!
             """)
+    
+    st.write("""
+        Each model was trained with different images. Therefore, your model selection is crucial.
+
+        While one model was trained on photorealistic image diffusion, another was trained on cartoon-like images.
+
+        HuggingFace models have a comprehensive description of the model's purpose. However, there are other models that do not have a description, in which case an internet search is always helpful.
+                    
+
+        """)
