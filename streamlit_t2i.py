@@ -9,7 +9,7 @@ st.set_page_config(page_title="Text-to-Image Generator",
 st.title("🎨 Text-to-Image mit Juggernaut-XL-v9")
 
 welcome_page_tab1, Chat_tab2, info_for_models_tab3 = st.tabs([" :house: Home", 
-                                                              " :statue_of_liberty: Chat", 
+                                                              " :statue_of_liberty: Text2ImageChat", 
                                                               " 🤗 hugging face models"])
 
 with welcome_page_tab1:
@@ -18,11 +18,15 @@ with welcome_page_tab1:
     st.write("""
             :blue[Riccardo D'Andrea] Welcome to my text-to-image journey!!! 🚀
 
-            I'm Riccardo, a data scientist and deep learning enthusiast from Germany 😊. I look forward to taking you on an exciting journey into the world of machine learning.
+            a data scientist and deep learning enthusiast from Germany 😊. 
+            I look forward to taking you on an exciting journey into the world 
+            of machine learning.
 
-            In this field, the unknown has often become tangible—I will help you understand this even better and enable you to take action yourself. 💡
+            In this field, the unknown has often become tangible—I will help 
+            you understand this even better and enable you to take action yourself. 💡
 
-            Let's discover it together! 🤔 Will we create new image spaces through text...?
+            Let's discover it together! 🤔 Will we create new image spaces 
+            through text...?
             """)
     
 
@@ -31,17 +35,28 @@ with welcome_page_tab1:
 
     st.write("""
         Imagine that text-to-image models allow us to visually manifest our desires. 
-        These models use techniques from machine learning research, in particular computer vision and neural networks, to create complex, high-resolution image descriptions from simple text.
+        These models use techniques from machine learning research, 
+        in particular computer vision and neural networks, to create complex, 
+        high-resolution image descriptions from simple text.
             
-        It works as follows: The input text is first encoded into a numerical format, which is then fed into a neural network as an input data stream. This network consists of several layers of neural units (neurons) that derive more complex information about the text and ultimately generate an image description.
+        It works as follows: The input text is first encoded into a numerical format, 
+        which is then fed into a neural network as an input data stream. 
+        This network consists of several layers of neural units (neurons) that 
+        derive more complex information about the text and ultimately generate 
+        an image description.
             
-        The image is generated through a process called “diffusion,” in which the neural network slowly builds up an image piece by piece. This process is divided into several steps: 
-        1) Preliminary information is generated, which serves as the starting point for the diffusion process.
+        The image is generated through a process called “diffusion,” in which the 
+        neural network slowly builds up an image piece by piece. This process is 
+        divided into several steps: 
+        1) Preliminary information is generated, which serves as the starting point 
+        for the diffusion process.
         2) The information is then spread and updated across the neural network.
         3) The process is repeated until a stable image is produced.
 
-        Text-to-image models have the ability to derive complex visual content from simple text descriptions. 
-        They can therefore be used as a tool to create innovative and creative images!
+        Text-to-image models have the ability to derive complex visual content 
+        from simple text descriptions. 
+        They can therefore be used as a tool to create innovative and creative 
+        images!
             """)
 
 
@@ -56,7 +71,7 @@ with Chat_tab2:
         value=5,
         step=1,
     )
-
+    
     # Pipeline laden
     def load_pipeline(model_path: str):
         pipe = DiffusionPipeline.from_pretrained(
@@ -131,7 +146,9 @@ with Chat_tab2:
             pipe = safe_load_pipeline(st.session_state.model_path)
 
             if isinstance(pipe, str):
-                st.session_state.messages.append({"role": "assistant", "type": "text", "content": pipe})
+                st.session_state.messages.append({"role": "assistant", 
+                                                  "type": "text", 
+                                                  "content": pipe})
                 with chat_container:
                     with st.chat_message("assistant"):
                         st.write(pipe)
@@ -139,7 +156,9 @@ with Chat_tab2:
             elif pipe is not None:
                 st.session_state.pipe = pipe
                 msg = "✅ Modell erfolgreich geladen! Gib jetzt deinen Prompt ein ✨"
-                st.session_state.messages.append({"role": "assistant", "type": "text", "content": msg})
+                st.session_state.messages.append({"role": "assistant", 
+                                                  "type": "text", 
+                                                  "content": msg})
                 with chat_container:
                     with st.chat_message("assistant"):
                         st.write(msg)
@@ -162,7 +181,9 @@ with Chat_tab2:
                             })
                         except Exception as e:
                             err_msg = f"❌ Fehler bei der Bildgenerierung: {e}"
-                            st.session_state.messages.append({"role": "assistant", "type": "text", "content": err_msg})
+                            st.session_state.messages.append({"role": "assistant", 
+                                                              "type": "text", 
+                                                              "content": err_msg})
                             st.error(err_msg)
 
 with info_for_models_tab3:
@@ -175,12 +196,15 @@ with info_for_models_tab3:
 
             This tool helps you select a suitable text-to-image model.
 
-            Each model was trained on different images, so your model selection is crucial.
+            Each model was trained on different images, so your model selection 
+            is crucial.
 
-            While one model was trained on photorealistic image diffusion, another was trained on cartoon-like images.
+            While one model was trained on photorealistic image diffusion, 
+            another was trained on cartoon-like images.
 
             HuggingFace models have a comprehensive description of the model's purpose. 
-            However, there are other models that do not have a description, in which case an internet search is always helpful.
+            However, there are other models that do not have a description, 
+            in which case an internet search is always helpful.
 
             """)
 
