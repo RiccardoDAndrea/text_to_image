@@ -1,62 +1,60 @@
 import streamlit as st
 import torch
 from diffusers import DiffusionPipeline
+from streamlit_lottie import st_lottie
 
+from utils import load_lottieurl
 st.set_page_config(page_title="Text-to-Image Generator",
                    page_icon="🎨",
                    layout="centered")
 
-st.title("🎨 Text-to-Image mit Juggernaut-XL-v9")
-
+st.title("🎨 Text-to-Image Locally")
+creative_man = load_lottieurl('https://lottie.host/a2786f75-598c-457d-83b8-da7d5c45b91f/g06V88qWpk.json')
+empty_chat_lottie = load_lottieurl('https://lottie.host/75cbdcf3-0356-4c8d-bfe3-5a278a262bb1/ShbsF9Vyu4.json')
 welcome_page_tab1, Chat_tab2, info_for_models_tab3 = st.tabs([" :house: Home", 
                                                               " :statue_of_liberty: Text2ImageChat", 
                                                               " 🤗 hugging face models"])
 
 with welcome_page_tab1:
+    creative_man_lottie_tab, welcome_text_tab = st.columns(2)
+
     # Introduction on what is text 2 Image
-    st.title("Welcome my name is")
-    st.write("""
-            :blue[Riccardo D'Andrea] Welcome to my text-to-image journey!!! 🚀
+    with creative_man_lottie_tab:
+        st_lottie(creative_man)
+    with welcome_text_tab:
+        st.markdown("""
+                    # Welcome! 🚀
 
-            a data scientist and deep learning enthusiast from Germany 😊. 
-            I look forward to taking you on an exciting journey into the world 
-            of machine learning.
+                    Hi, my name is **Riccardo D'Andrea** – welcome to my **Text-to-Image Journey**! 😊  
 
-            In this field, the unknown has often become tangible—I will help 
-            you understand this even better and enable you to take action yourself. 💡
+                    I'm a **data scientist** and **deep learning enthusiast** from Germany 🇩🇪, and I'm excited to take you on an adventure into the world of **machine learning**.  
 
-            Let's discover it together! 🤔 Will we create new image spaces 
-            through text...?
-            """)
+                    In this field, the unknown often becomes tangible 🔍 – I’ll help you understand it better and empower you to take action yourself 💡.  
+
+                    Let's explore together! 🤔 Will we create new **image spaces** just from text…? 🌈✨
+                    """)
     
 
     st.divider()
-    st.subheader("What is Text 2 Image?")
 
-    st.write("""
-        Imagine that text-to-image models allow us to visually manifest our desires. 
-        These models use techniques from machine learning research, 
-        in particular computer vision and neural networks, to create complex, 
-        high-resolution image descriptions from simple text.
-            
-        It works as follows: The input text is first encoded into a numerical format, 
-        which is then fed into a neural network as an input data stream. 
-        This network consists of several layers of neural units (neurons) that 
-        derive more complex information about the text and ultimately generate 
-        an image description.
-            
-        The image is generated through a process called “diffusion,” in which the 
-        neural network slowly builds up an image piece by piece. This process is 
-        divided into several steps: 
-        1) Preliminary information is generated, which serves as the starting point 
-        for the diffusion process.
-        2) The information is then spread and updated across the neural network.
-        3) The process is repeated until a stable image is produced.
+    st.markdown("""
+            # What is Text 2 Image? 🎨✨
 
-        Text-to-image models have the ability to derive complex visual content 
-        from simple text descriptions. 
-        They can therefore be used as a tool to create innovative and creative 
-        images!
+            Imagine text-to-image models are like magical potions 🧙‍♂️: you give them a few words, and *voilà* – they turn them into a picture! 🖼️💫 These models use clever tricks from **artificial intelligence**, especially **computer vision** and **neural networks**, to transform simple text into complex, high-resolution images.
+
+            **Here’s how it works:**
+
+            1. Your text is first turned into numbers 🔢 – a kind of “secret language” the computer understands.  
+            2. These numbers are fed into a neural network 🧠, made up of layers of neurons. Each neuron thinks a little, mixes information, and wonders: “Hmm, what could this image look like?” 🤔  
+            3. Now comes the fun part: **diffusion** 🌫️. The network builds the image step by step, like an artist painting layer by layer:  
+            - First, a rough sketch is conjured ✏️  
+            - Then details are spread, adjusted, and polished 🎨  
+            - Step by step, until a stable, finished image emerges 🖼️✨
+
+            The result? An image born from just a few words, almost like you poured your imagination into color! 🌈😄
+
+            **Why it’s awesome:**  
+            Text-to-image models can bring super creative ideas to life – whether you want a cartoon, a scenic landscape, or a wacky fantasy creature. They’re like tiny AI artists who never get tired 🎨🤖💖.
             """)
 
 
@@ -131,7 +129,11 @@ with Chat_tab2:
 
     # --- Eingabe ganz unten, außerhalb des Containers ---
     user_input = st.chat_input("👉 Modellpfad zuerst eingeben, danach Prompts...")
-
+    if bool(user_input)==False:
+        st_lottie(empty_chat_lottie,
+                  width=600, height=300)
+        st.info("Hey I am your Prime i am here to help you")
+        st.info("Please give me your file path were you have saved your Models")
     if user_input:
         st.session_state.messages.append({"role": "user", "type": "text", "content": user_input})
         with chat_container:
@@ -211,42 +213,46 @@ with info_for_models_tab3:
     # Button to open Model Catalog
     st.markdown("[Find your Models](https://huggingface.co/models?pipeline_tag=text-to-image&sort=trending)")
     # Select text to image model
-
-    models = ["Stable Diffusion", "DALL-E 2", "Midjourney"]
+    st.divider()
+    models = ["RunDiffusion/Juggernaut-XL-v9", "Lykon/dreamshaper-7", "UnfilteredAI/NSFW-gen-v2"]
     selected_model = st.selectbox("Choose a Model:", models)
 
-    if selected_model == 'Stable Diffusion':
-        # Info about the chosen model
+    if selected_model == 'RunDiffusion/Juggernaut-XL-v9':
         st.write("""
                 **Model Details:**
 
-                * Purpose: Text-to-image tasks, such as generating photorealistic images from text descriptions.
+                * Purpose: Dein persönlicher Foto-Zauberer 🧙‍♂️📸 – erschafft fotorealistische Bilder von Landschaften, Menschen oder Objekten, als hätte er selbst eine Kamera in der Hand. Perfekt, wenn du realitätsnahe Szenen brauchst oder ein Bild generieren willst, das fast wie ein Foto aussieht.
 
-                * Training Data: Photorealistic images
+                * Training Data: Hochwertige, fotorealistische Bilder aus allen möglichen Quellen. Alles wurde trainiert, damit das Modell Licht, Schatten und Perspektiven wie ein echter Fotograf versteht 🌄💡.
 
-                Important Source: [Stable Diffusion](https://huggingface.co/docs/transformers/model_doc/stablediffusion) 
+                * Besonderheit: Ideal für Projekte, bei denen die Realität täuschend echt aussehen soll – z. B. Produktbilder, Architekturszenen oder Portraits.  
+
+                Important Source: [Juggernaut-XL-v9](https://huggingface.co/RunDiffusion/Juggernaut-XL-v9) 🖼️
         """)
 
-    elif selected_model == 'DALL-E 2':
-        # Info about the chosen model
+    elif selected_model == 'Lykon/dreamshaper-7':
         st.write("""
                 **Model Details:**
 
-                * Purpose: Text-to-image tasks, such as generating photorealistic images from text descriptions.
+                * Purpose: Der kreative Traum-Maler 🎨💭 – perfekt für farbenfrohe, fantasievolle Kunstwerke. Anders als Juggernaut-XL zaubert Dreamshaper-7 eher Cartoon-, Manga- oder Illustrations-Stil, weniger fotorealistisch, dafür voller Charakter und Stimmung.
 
-                * Training Data: Cartoon-like images
+                * Training Data: Cartoon- und Kunstbilder, Concept Art und Illustrationen. Die Bilder sind stilisiert und bunt – als würdest du durch ein Kaleidoskop schauen 🌈✨.  
 
-                Important Source: [DALL-E 2](https://huggingface.co/ehristoforu/dalle-3-xl-v2) 
+                * Besonderheit: Ideal für Charakterdesigns, Storyboards, Comic-Kunst oder kreative Szenen, bei denen Realismus nicht das Ziel ist. Ein echtes Spielzeug für die Fantasie! 🧸🎭  
+
+                Important Source: [Lykon/dreamshaper-7](https://huggingface.co/Lykon/dreamshaper-7) 🧩
         """)
 
-    elif selected_model == 'Midjourney':
-        # Info about the chosen model
+    elif selected_model == 'UnfilteredAI/NSFW-gen-v2':
         st.write("""
                 **Model Details:**
 
-                    * Purpose: Text-to-image tasks, such as generating photorealistic images from text descriptions.
+                * Purpose: Der rebellische Fotograf 📷🔥 – generiert realistische Bilder, oft mit erwachsenen Inhalten. Dieses Modell ist sehr leistungsstark, aber auch riskant, da es Inhalte erzeugen kann, die nicht jugendfrei oder rechtlich problematisch sein können.  
 
-                    * Training Data: Photographic images
+                * Training Data: Rohes, fotografisches Material aus verschiedenen Quellen. Das Modell hat keine strengen Filter, deshalb entstehen Inhalte, die verstörend oder heikel sein können ⚠️.  
 
-                Important Source: [Midjourney](https://huggingface.co/strangerzonehf/Flux-Midjourney-Mix2-LoRA) 
+                * Besonderheit: NSFW-gen-v2 eignet sich nur für verantwortungsbewusste Nutzung in sicheren, rechtlich zulässigen Umgebungen. Achtung: Es kann leicht zu problematischen Inhalten führen, also unbedingt Vorsicht walten lassen 🚨.  
+
+                Important Source: [UnfilteredAI/NSFW-gen-v2](https://huggingface.co/UnfilteredAI/NSFW-gen-v2?not-for-all-audiences=true) 🚀
         """)
+
