@@ -3,17 +3,34 @@ import torch
 from diffusers import DiffusionPipeline
 from streamlit_lottie import st_lottie
 
-from utils import load_lottieurl
+from utils import load_lottieurl, get_gpu_memory
 st.set_page_config(page_title="Text-to-Image Generator",
                    page_icon="🎨",
                    layout="centered")
 
+
+total, used, free = get_gpu_memory()
+
+# Sidebar: GPU Infos
+st.sidebar.header("GPU Status")
+st.sidebar.metric("Total VRAM", f"{total:.2f} GB")
+st.sidebar.metric("Used VRAM", f"{used:.2f} GB")
+st.sidebar.metric("Free VRAM", f"{free:.2f} GB")
+
+# Sidebar: Slider
+user_num_inference_steps = st.sidebar.slider(
+    label="Inference Steps",
+    min_value=1,
+    max_value=50,
+    value=5,
+    step=1,
+)
 st.title("🎨 Text-to-Image Locally")
 creative_man = load_lottieurl('https://lottie.host/a2786f75-598c-457d-83b8-da7d5c45b91f/g06V88qWpk.json')
 empty_chat_lottie = load_lottieurl('https://lottie.host/75cbdcf3-0356-4c8d-bfe3-5a278a262bb1/ShbsF9Vyu4.json')
 welcome_page_tab1, Chat_tab2, info_for_models_tab3 = st.tabs([" :house: Home", 
                                                               " :statue_of_liberty: Text2ImageChat", 
-                                                              " 🤗 hugging face models"])
+                                                              " 🤗 Huggingface models"])
 
 with welcome_page_tab1:
     creative_man_lottie_tab, welcome_text_tab = st.columns(2)
@@ -62,13 +79,7 @@ with welcome_page_tab1:
     st.markdown("")
 with Chat_tab2:
     # Sidebar Parameter
-    user_num_inference_steps = st.sidebar.slider(
-        label="inference steps",
-        min_value=1,
-        max_value=50,
-        value=5,
-        step=1,
-    )
+    
     
     # Pipeline laden
     def load_pipeline(model_path: str):
@@ -215,6 +226,8 @@ with info_for_models_tab3:
     # Select text to image model
     st.divider()
     models = ["RunDiffusion/Juggernaut-XL-v9", "Lykon/dreamshaper-7", "UnfilteredAI/NSFW-gen-v2"]
+    st.markdown("""To give you an idea, here are a few examples of models. You can use them,
+                    but you don't have to.""")
     selected_model = st.selectbox("Choose a Model:", models)
 
     if selected_model == 'RunDiffusion/Juggernaut-XL-v9':
@@ -229,7 +242,7 @@ with info_for_models_tab3:
 
                 Important Source: [Juggernaut-XL-v9](https://huggingface.co/RunDiffusion/Juggernaut-XL-v9) 🖼️
         """)
-
+        st.image("https://imagedelivery.net/siANnpeNAc_S2q1M3-eDrA/c200a026-c151-49c7-afbc-241fe943b300/public")
     elif selected_model == 'Lykon/dreamshaper-7':
         st.write("""
                 **Model Details:**
@@ -242,6 +255,7 @@ with info_for_models_tab3:
 
                 Important Source: [Lykon/dreamshaper-7](https://huggingface.co/Lykon/dreamshaper-7) 🧩
         """)
+        st.image("https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-7/9b481047f77996efa025e75e03941dbf51f506ad/image.png?%2FLykon%2Fdreamshaper-7%2Fresolve%2Fmain%2Fimage.png=&etag=%2250f24b3ba8a4644a5896c9e4d5d85b684d31b805%22")
 
     elif selected_model == 'UnfilteredAI/NSFW-gen-v2':
         st.write("""
