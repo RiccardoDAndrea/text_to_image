@@ -2,6 +2,7 @@ import os
 import requests
 from diffusers import AutoPipelineForText2Image, DEISMultistepScheduler
 import torch
+import nvidia_smi
 
 
 def load_lottieurl(url: str):
@@ -14,4 +15,14 @@ def load_lottieurl(url: str):
         print(f"[WARN] Konnte Lottie-Animation nicht laden: {e}")
     return None
 
-
+def get_gpu_memory():
+    nvidia_smi.nvmlInit()
+    try:
+        handle = nvidia_smi.nvmlDeviceGetHandleByIndex(0)
+        mem_info = nvidia_smi.nvmlDeviceGetMemoryInfo(handle)
+        total = mem_info.total / 1024**3  # in GB
+        used = mem_info.used / 1024**3   # in GB
+        free = mem_info.free / 1024**3   # in GB
+    finally:
+        nvidia_smi.nvmlShutdown()
+    return total, used, free
